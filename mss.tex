@@ -1,6 +1,7 @@
 \documentclass[twoside]{article}
 
 \usepackage{ustj}
+\usepackage{enumitem}
 
 \addbibresource{mss.bib}
 
@@ -17,8 +18,8 @@ Trent Steen~\patp{hanfel-dovned} \\
 \fancyhead{}
 \fancyfoot[L]{{\footnotesize
               %% We toggle between these:
-              Manuscript submitted for review.\\
-              % {\it Urbit Systems Technical Journal} I:1 (2024):  1–3. \\
+              % Manuscript submitted for review.\\
+              {\it Urbit Systems Technical Journal} III:2 (2026):  87–122. \\
               ~ \\
               Address author correspondence to \authorpatp.
               }}
@@ -57,7 +58,7 @@ majority of participants are autonomous AI agents.
 
 % We will adjust page numbering in final editing.
 \pagenumbering{arabic}
-\setcounter{page}{1}
+\setcounter{page}{87}
 
 \tableofcontents
 
@@ -135,7 +136,7 @@ solutions---\textsc{captcha}, \textsc{sim}/ID/Email verification,
 blacklisting IP ranges, etc.---which are isolated, interactive,
 ``conversation-'' or ``connection-oriented'' exchanges, as opposed to
 our ``data-oriented'' (as in Named Data Networking,
-\citet{DirectedMessaging2026}) approach to identity, attestation, and
+\citeauthor{DirectedMessaging2026}, 2026) approach to identity, attestation, and
 peer-to-peer networking.
 
 \sloppy
@@ -190,15 +191,15 @@ of 2,048 words. Each word in the string represents 11 bits in a
 bitstring of entropy $\textsc{ent}$ with an appended checksum of
 bitlength $(\textsc{ent}/32)$.
 
-Two key differences from \textsc{bip}-39 mnemonics:
+Two key differences from \textsc{bip}-39 mnemonics obtain:
 
-\begin{itemize}
+\begin{itemize}[noitemsep,topsep=2pt]
 
 \item
   We do not expect mnemonyms wordlists to be embedded in crypto hardware
   wallets in the base case; as a result, we grant a proliferation of
   wordlists for various languages, communities, and personal
-  use-cases.\\
+  use-cases.
 \item
   Mnemonym strings represent an entire series of leading null words by
   omission; non-leading null words are represented normally, with
@@ -236,7 +237,7 @@ would be encoded as\ldots{}
 \noindent
 We reserve five visual representations of nyms at the protocol level:
 
-\begin{itemize}
+\begin{itemize}[noitemsep,topsep=2pt]
 
 \item
   Bare nyms, e.g.,
@@ -271,7 +272,7 @@ We reserve five visual representations of nyms at the protocol level:
 
 Implementations must reserve these as follows:
 
-\begin{itemize}
+\begin{itemize}[noitemsep,topsep=2pt]
 
 \item
   One-dot for nyms which they have verified as being on the relevant
@@ -348,7 +349,7 @@ and easy to work with as possible.
 In our iambic English wordlist, we achieve this by trying to fulfill the
 following criteria:
 
-\begin{itemize}
+\begin{itemize}[noitemsep,topsep=2pt]
 
 \item
   Every word is a two-syllable iamb, which enhances memorability in that
@@ -799,17 +800,17 @@ string that encodes a header and a payload.
 
 The 12-bit header has this structure:
 
-\begin{itemize}
+\begin{itemize}[noitemsep,topsep=2pt]
 
 \item
   \textbf{First 1 bit:} A \texttt{0} or \texttt{1} flag that tells us if
   the signer has signed a hash of the \texttt{/tag/path} string
   (\texttt{1}), or the \texttt{/tag/path} string concatenated with the
   response we will receive from that path (\texttt{0}). This flag bit is
-  not subject to Kelvin-versioning.\\
+  not subject to Kelvin-versioning.
 \item
   \textbf{Next 3 bits:} Kelvin version number. Wires launch at 7K, or
-  \texttt{111}. Everything to the right of this is version-dependent.\\
+  \texttt{111}. Everything to the right of this is version-dependent.
 \item
   \textbf{Next 8 bits:} The bytewidth of the decoded \texttt{/tag/path}
   string, which is up to 256 \textsc{ascii} characters.
@@ -817,15 +818,15 @@ The 12-bit header has this structure:
 
 The payload has this structure:
 
-\begin{itemize}
+\begin{itemize}[noitemsep,topsep=2pt]
 
 \item
   \textbf{First 16 bits:} Key rotation number, an abstraction over
   whatever key rotation mechanism the \textsc{pki} substrate uses. May not be
-  \texttt{0}, we assume the signer's first keypair is \texttt{1}.\\
+  \texttt{0}, we assume the signer's first keypair is \texttt{1}.
 \item
   \textbf{Next \emph{n} bytes:} The plaintext \texttt{/tag/path} string,
-  where \emph{n} is specified in the header\\
+  where \emph{n} is specified in the header
 \item
   \textbf{Next 64 bytes:} 7K's EdDSA signature of a 32-byte SHA256 of
   either \texttt{key\_rotation\ \textbar{}\textbar{}\ tag\_path} or
@@ -859,35 +860,35 @@ by the verifier.)
 
 Some example use-cases for Wire \textsc{uri}s are as follows:
 
-\begin{itemize}
+\begin{itemize}[noitemsep,topsep=2pt]
 
 \item
   \texttt{/mailto}: A business or government agency signs their email
-  address in a public link.\\
+  address in a public link.
 \item
   \texttt{/https}: A business signs links in their emails such that a
   Groundwire-aware email client can filter out phishing scams without
-  reference to a trusted third party.\\
+  reference to a trusted third party.
 \item
   \texttt{/tel}: A government agency signs their public-facing telephone
   numbers; they sign numbers they may call from such that a
-  Groundwire-aware phone / VoIP client can verify the number is
-  legitimate before it rings.\\
+  Groundwire-aware phone/VoIP client can verify the number is
+  legitimate before it rings.
 \item
   \texttt{/bitcoin}: A Groundwire ID requests payment to a Bitcoin
   address that may or may not hold the Groundwire ID's corresponding
   sat, enabling multi-wallet setups. The \textsc{uri} may also include a
-  requested payment amount.\\
+  requested payment amount.
 \item
   \texttt{/wss}: A WebSockets server provider links a server they run to
   their Groundwire ID, without necessarily having to run that server on
-  their Groundwire node.\\
+  their Groundwire node.
 \item
   \texttt{/ssh}: A \textsc{vps} host signs their host key fingerprint,
   supplementing trust-on-first-use for users who want to SSH into that
-  server.\\
+  server.
 \item
-  \texttt{/geo}: A Groundwire ID signs coordinates of a geocache.\\
+  \texttt{/geo}: A Groundwire ID signs coordinates of a geocache.
 \item
   \texttt{/ipfs}: A Groundwire ID signs some distributed content by its
   hash, linking the content to the ID without the ID user having to run
@@ -940,11 +941,11 @@ Other than the caveats above and some other details, all headline
 features of Directed Messaging should be implemented in a Mesa library
 as protocol invariants:
 
-\begin{itemize}
+\begin{itemize}[noitemsep,topsep=2pt]
 
 \item
   All messages should be requests or authenticated responses carrying
-  named data.\\
+  named data.
 \item
   Authentication should happen on packets and not sessions.\\
 \item
@@ -964,17 +965,17 @@ referentially-transparent namespace, with Groundwire IDs at the root,
 has its own use-cases for the distributed networking cases we're
 interested in:
 
-\begin{itemize}
+\begin{itemize}[noitemsep,topsep=2pt]
 
 \item
   Every path is signed by its publisher and has a version number, and
   there is currently no way to request data at a path without knowing
-  its version number, so npm-style unversioned imports are impossible.\\
+  its version number, so npm-style unversioned imports are impossible.
 \item
   Referentially-transparent paths under identities with key rotation
   enable more long-lived authorities over links, and Mesa's caching and
   relay properties trivialize distributed archives and other \textsc{cdn}-like
-  setups.\\
+  setups.
 \item
   Cheap, mechanically trivial \textsc{cdn}s distribute spread load away from
   content publishers, so the cost of responding to reads trends
@@ -994,21 +995,21 @@ Our Mesa release will be a formal spec and at least one open-source
 reference implementation, likely in C. Many implementation details are
 left as exercises for network developers, including:
 
-\begin{itemize}
+\begin{itemize}[noitemsep,topsep=2pt]
 
 \item
   Peer discovery mechanisms (bootstrap nodes, \textsc{dht}s, pre-distributed
-  \textsc{pki}s, etc.)\\
+  \textsc{pki}s, etc.).
 \item
-  Transport layers (Mesa over \textsc{tcp}, \textsc{udp}, \textsc{sctp}, etc.)\\
+  Transport layers (Mesa over \textsc{tcp}, \textsc{udp}, \textsc{sctp}, etc.).
 \item
-  Caching policies\\
+  Caching policies.
 \item
-  P2P economic incentives (congestion control, relays, \textsc{cdn}s, etc.)\\
+  P2P economic incentives (congestion control, relays, \textsc{cdn}s, etc.).
 \item
-  Interaction with anonymous requesters\\
+  Interaction with anonymous requesters.
 \item
-  Reputation / uptime scoring
+  Reputation/uptime scoring.
 \end{itemize}
 
 Our Mesa work is in a preliminary \href{https://github.com/gwbtc/libmesa}{\texttt{gwbtc/libmesa}} repo, which
@@ -1041,16 +1042,16 @@ in the known PQ algorithms that are feasible for Bitcoin.
 Our strategy for an early, low-overhead migration precisely mirrors the
 \textsc{bip}-360 ``Pay-to-Merkle-Root'' quantum resistance project (\citeyear{BIP0360}):
 
-\begin{itemize}
+\begin{itemize}[noitemsep,topsep=2pt]
 
 \item
-  Abandon offchain key tweaking\\
+  Abandon offchain key tweaking.
 \item
   Breach comet semantics from pubkey hashes to pure hashes of structured
-  data that attest multiple signature algorithms\\
+  data that attest multiple signature algorithms.
 \item
   Implement a range of high-attention open PQ signature schemes drawn
-  from Bitcoin research and other networks
+  from Bitcoin research and other networks.
 \end{itemize}
 
 We expect that efforts in that third area, implementing new signature
@@ -1097,21 +1098,21 @@ We haven't explored the design space for this yet, but for our purposes
 a system for deriving and verifying identities must satisfy these
 requirements:
 
-\begin{enumerate}
+\begin{enumerate}[noitemsep,topsep=2pt]
 \def\labelenumi{\arabic{enumi}.}
 
 \item
   Derived identities are trivially verifiable as belonging to their
-  ultimate root identities and any parent identities in between.\\
+  ultimate root identities and any parent identities in between.
 \item
   Deriving an identity is mechanically simple, computationally cheap,
   and almost instantaneous; an AI agent can trivially derive their own
   identities, having gained approval from its root identity via manual
-  sign-off or hard-coded policy.\\
+  sign-off or hard-coded policy.
 \item
   Freshly derived identities have no sybil resistance value of their
   own, instead backed by the sybil value of their ultimate root identity
-  and subject to whichever calculation a verifier chooses.\\
+  and subject to whichever calculation a verifier chooses.
 \item
   Parent/child relationships can be expressed in the namespace and
   children may be identified via their parents; e.g.~if AI agent
@@ -1379,7 +1380,7 @@ they'll generate the longest chain and outpace attackers.''
 
 May the longest proof-of-work chain win.
 
-\section{References}\label{references}
+% \section{References}\label{references}
 
 
 \selectlanguage{USenglish}
