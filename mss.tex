@@ -70,7 +70,7 @@ public web into closed (if not exactly private) online spaces.
 Everywhere you go online, there you are: ticking a box to prove you are
 human. Public discourse and culture at large suffer as the information
 environment is increasingly beset by engagement-farming bot accounts
-and more increasingly automated, agentic pipelines for state and
+and increasingly automated, agentic pipelines for state and
 non-state manipulation of target demographics \citep{Lumbaca2025}.
 
 Spam prevention on these platforms is stymied by fundamental conflicts
@@ -88,37 +88,35 @@ increase operating expenses in the seller's market for fake accounts.
 Fake accounts tied to phone numbers in those markets currently sell for
 an average \$4.93 (Japan) and \$3.24 (Australia) per account in the same
 bulk volumes as cheaper \$0.10 (UK) and \$0.26 (US) accounts, as sellers
-pass \textsc{sim} costs to buyers, with accounts on Telegram and WhatsApp rising
+pass \textsc{sim} costs to buyers, with prices for accounts on Telegram and WhatsApp rising
 up to 15\% in the lead-up to national elections \citep{Cambridge2025}.
 
 The spam resistance stack we outline here is general purpose: any
 platform could implement some or all of it. Our interest lies not in
 redeeming Web 2.0 from its malign incentives, nor do we seek a return
 to a prelapsarian ``open web'' whose very openness exposed it to
-predation, centralization, and enclosure \citep{Davis2022}. We instead
-seek to implement a new, decentralized, sybil-resistant identity and
-peer-to-peer networking stack.
+predation, centralization, and enclosure \citep{Davis2022}.
 
-This article introduces three separable but complementary layers of a
+This article introduces three separable but complementary layers of a new
 decentralized identity and peer-to-peer networking stack:
 
-\begin{enumerate}
+\begin{enumerate}[noitemsep,topsep=2pt]
 \def\labelenumi{\arabic{enumi}.}
 \item
   \sloppy
   Mnemonyms \S\ref{mnemonyms}, a \textsc{bip}-39-style (\citeyear{BIP0039}) mnemonic system
-  for reasonably short, human-meaningful references to public keys.\\
+  for reasonably short, human-meaningful references to public keys.
 \item
   \sloppy
   Groundwire ID \S\ref{groundwire-id}, a protocol for unique, persistent cryptographic
-  identity across key rotations, tied to public signatures.\\
+  identity across key rotations, tied to public signatures.
 \item
   \sloppy
   Wire \S\ref{wire-uris}, a \textsc{uri} scheme for signing data on arbitrary namespaces,
   securing it against the value of the signer's Groundwire ID.
 \end{enumerate}
 
-In Future Work \S\ref{future-work} we outline near- to
+In the Future Work section \S\ref{future-work} we outline near- to
 medium-term projects including named data networking secured against
 Groundwire ID, post-quantum signatures, and derivative identities for
 AI agents and networked devices.
@@ -128,7 +126,7 @@ issues for the software ecosystem we anticipate: security by planned
 ossification, and trustless consensus mechanisms.
 
 \sloppy
-Groundwire is in part an argument about structure: we content that the
+Groundwire is in part an argument about structure: we contend that the
 collective cultivation of a global filesystem-like (or, ``tree-shaped'')
 namespace where end-users are cryptographically sovereign root nodes can
 deliver a more effective sybil resistance regime than all mainstream
@@ -136,8 +134,7 @@ solutions---\textsc{captcha}, \textsc{sim}/ID/Email verification,
 blacklisting IP ranges, etc.---which are isolated, interactive,
 ``conversation-'' or ``connection-oriented'' exchanges, as opposed to
 our ``data-oriented'' (as in Named Data Networking,
-\citeauthor{DirectedMessaging2026}, 2026) approach to identity, attestation, and
-peer-to-peer networking.
+\citeauthor{DirectedMessaging2026}, 2026) approach to sybil resistance.
 
 \sloppy
 Materially, Groundwire's first implementation \S\ref{groundwire-id}
@@ -156,14 +153,13 @@ discriminate.
 \sloppy
 A client may reconcile the namespace from multiple sources if it is not
 already unified in-situ. In the sybil resistance case they may apply
-policy to logical subtrees (supplementing or replacing IP ranges and
-geoblocks), analyse node provenance across space (permissions,
+policy to logical subtrees, analyse node provenance across space (permissions,
 derivative agent identities \S\ref{hierarchical-identity}) and time
-(key rotations, verifiable onchain history). When this exact same
+(key rotations, verifiable onchain history \S\ref{onchain-attestation}). When this exact same
 filesystem addresses data storage, \mbox{financial} transactions, and
-networking traffic, the design space for simple and efficient (so,
-decentralizable) sybil resistance tooling is wide open. Any subtree in
-the namespace can be summed into some quantity of trust-value over and
+networking traffic \S\ref{named-data-networking}, the design space for
+simple and efficient (so, decentralizable) sybil resistance tooling is wide open.
+Any subtree in the namespace can be summed into some quantity of trust-value over and
 above the total financial, computational, and/or thermodynamic cost of
 creating the nodes in that subtree, where every node in the subtree is
 ultimately secured against the proof-of-work value of the keypair that
@@ -171,7 +167,7 @@ created it.
 
 We take care from the outset to support interoperability between
 software that uses Mnemonyms, Groundwire ID, and Wire \textsc{uri}s,
-preferring to leave composition of that software to the end-user.
+preferring to leave composition of that software to developers and end-users.
 
 The sections below are introductory snapshots of works in progress, and
 not full specifications. The Groundwire Foundation has implemented these
@@ -180,13 +176,13 @@ subject to change before production launch.
 
 \section{Mnemonyms}\label{mnemonyms}
 
-The mnemonym scheme is a general-purpose scheme for generating mnemonic
+The mnemonym scheme is a general-purpose method for generating mnemonic
 references to binary strings. We use these as reasonably short,
 human-meaningful references to public keys on a \textsc{pki} such as Bitcoin,
-Nostr, or Groundwire ID.
+Nostr, and Groundwire ID.
 
 The mnemonym design is greatly inspired by \textsc{bip}-39. Like
-\textsc{bip}39, a mnemonyms wordlist is an alphabetically-sorted list
+\textsc{bip}39, a mnemonym wordlist is an alphabetically-sorted list
 of 2,048 words. Each word in the string represents 11 bits in a
 bitstring of entropy $\textsc{ent}$ with an appended checksum of
 bitlength $(\textsc{ent}/32)$.
@@ -196,7 +192,7 @@ Two key differences from \textsc{bip}-39 mnemonics obtain:
 \begin{itemize}[noitemsep,topsep=2pt]
 
 \item
-  We do not expect mnemonyms wordlists to be embedded in crypto hardware
+  We do not expect mnemonym wordlists to be embedded in crypto hardware
   wallets in the base case; as a result, we grant a proliferation of
   wordlists for various languages, communities, and personal
   use-cases.
@@ -211,28 +207,28 @@ By omitting leading zeroes, we allow for reasonably short mnemonyms (or
 underlying \textsc{pki} permits. Such schemes may include simple
 first-come-first-serve domain registration, digital
 feudalism \citep{YarvinSpecIntro}, or proof-of-work
-mining. In a centralized, permissioned, or ``feudal'' system the length
+mining. In a centralized, permissioned, or feudal system the length
 of the nym is useless as a market signal in and of itself: you must
-understand its provenance to find out it was attained and at what cost,
+understand its provenance to find out how it was attained and at what cost,
 if any. In a permissionless proof-of-work system, the length of the nym
 approximately illustrates the thermodynamic cost at which the keypair
 must have been discovered and acquired, whether the holder of the nym
-mined it on their own machine or purchased it from the miner.
+mined it on their own machine or purchased it from a miner.
 
-Our initial English wordlist, detailed further below, consists
+Our initial English wordlist \S\ref{wordlist-construction} consists
 exclusively of iambs. For example, the pubkey\ldots{}
 
-\begin{verbatim}
+\begin{lstlisting}[style=listingcode]
 00000000000ba839b38bcfd68037176c
-\end{verbatim}
+\end{lstlisting}
 
 \noindent
 would be encoded as\ldots{}
 
-\begin{verbatim}
+\begin{lstlisting}[style=listingcode]
 .preserves.astounds.regrets.ensoul.repeats.about
 .receive.repulsed
-\end{verbatim}
+\end{lstlisting}
 
 \noindent
 We reserve five visual representations of nyms at the protocol level:
@@ -240,56 +236,51 @@ We reserve five visual representations of nyms at the protocol level:
 \begin{itemize}[noitemsep,topsep=2pt]
 
 \item
-  Bare nyms, e.g.,
-  \begin{center}
-  \texttt{abet.baboon.caffeine.denounce.escape}
-  \end{center}
+  Bare nyms, e.\,g.,
+  \par{\centering
+  \texttt{abet.baboon.caffeine.denounce.escape}\par}
 \item
-  One-dot nyms, e.g.,
-  \begin{center}
-  \texttt{.abet.baboon.caffeine.denounce.escape}
-  \end{center}
+  One-dot nyms, e.\,g.,
+  \par{\centering
+  \texttt{.abet.baboon.caffeine.denounce.escape}\par}
 \item
-  Two-dot nyms, e.g.,
-  \begin{center}
-  \texttt{..abet.baboon.caffeine.denounce.escape}
-  \end{center}
+  Two-dot nyms, e.\,g.,
+  \par{\centering
+  \texttt{..abet.baboon.caffeine.denounce.escape}\par}
 \item
   ``Foreshortened'' nyms of a string's first, second, penultimate, and
-  final words, e.g.,
-  \begin{center}
+  final words, e.\,g.,
+  \par{\centering
   \texttt{\phantom{~}.abet.baboon..denounce.escape}\\
-  \texttt{..abet.baboon..denounce.escape}
-  \end{center}
+  \texttt{..abet.baboon..denounce.escape}\par}
 \item
   ``Abridged'' nyms of just its first and last words,
-  e.g.,
-  \begin{center}
+  e.\,g.,
+  \par{\centering
     \texttt{\phantom{~}.abet...escape}\\
-    \texttt{..abet...escape}
-  \end{center}
+    \texttt{..abet...escape}\par}
 \end{itemize}
 
-Implementations must reserve these as follows:
+Applications must reserve these as follows:
 
 \begin{itemize}[noitemsep,topsep=2pt]
 
 \item
   One-dot for nyms which they have verified as being on the relevant
-  \textsc{pki}.\\
+  \textsc{pki}.
 \item
   Two-dot for nyms which they have either confirmed are not on the \textsc{pki},
   or for disposable references they do not expect to correspond to user
-  identities on the \textsc{pki} (e.g.~block hashes, content hashes, receiving
-  addresses, etc.).\\
+  identities on the \textsc{pki} (e.\,g.\ block hashes, content hashes, receiving
+  addresses, etc.).
 \item
   Bare nyms are reserved for intermediate contexts where a sender and
-  receiver may or may not respect the same \textsc{pki} (e.g.~Wire \textsc{uri}s).
+    receiver may or may not respect the same \textsc{pki} (e.\,g.\ Wire \textsc{uri}s \S\ref{wire-uris}).
 \end{itemize}
 
 ``Foreshortened'' and ``abridged'' nyms may be used however the
 application developer sees fit, though abridged nyms must not be used in
-contexts where user funds may be at risk.
+contexts where user funds may be at risk, to mitigate against address poisoning.
 
 These are the only nym representations we formally bless. Informally, we
 grant that pseudonymous users may come up with various colloquial,
@@ -300,19 +291,20 @@ conventional ``contact book'' or ``display name'' features on top of
 mnemonyms at some point, obviating their use in online social contexts
 beyond first contact or peer-to-peer financial transactions.
 
-The wordlist and libraries in C, Python, and Hoon are available at
+The iambic English wordlist and libraries in C, Python, and Hoon are available at
 \href{https://github.com/gwbtc/mnemonyms}{\texttt{gwbtc/mnemonyms}}. Our C library is implemented in
-\href{https://github.com/gwbtc/comet-miner}{\texttt{gwbtc/comet-miner}}.
+\href{https://github.com/gwbtc/comet-miner}{\texttt{gwbtc/comet-miner}}. The
+iambic English wordlist is still a work-in-progress and likely to change.
 
 \subsection{Multi-line layouts}\label{multi-line-layouts}
 
-Application developers may lay the nym out across several lines, e.g.~in
+Application developers may lay the nym out across several lines, e.\,g.\ in
 a UI context specifically designed to help the user memorize a nym. We
 encourage the following layouts specifically:
 
 Twelve-word nym on three lines of four words:
 
-\begin{lstlisting}[style=listingblock]
+\begin{lstlisting}[style=listingcode]
 .eclipse.betray.escape.delight
 .mankind.alone.delay.ignite
 .implode.elect.enclose.alas
@@ -320,14 +312,14 @@ Twelve-word nym on three lines of four words:
 
 Ten-word nym on two lines of five words:
 
-\begin{lstlisting}[style=listingblock]
+\begin{lstlisting}[style=listingcode]
 .tattoo.giraffe.kazoo.champagne.balloon
 .auteurs.ablaze.admire.untamed.display
 \end{lstlisting}
 
 Nine-word nym on three lines of three words:
 
-\begin{lstlisting}[style=listingblock]
+\begin{lstlisting}[style=listingcode]
 .raccoon.beret.lagoon
 .typhoon.guitar.chateau
 .concur.exempt.vacate
@@ -335,7 +327,7 @@ Nine-word nym on three lines of three words:
 
 Eight-word nym on two lines of four words:
 
-\begin{lstlisting}[style=listingblock]
+\begin{lstlisting}[style=listingcode]
 .disgrace.expired.infest.reject
 .doubloon.retells.entice.retreat
 \end{lstlisting}
@@ -354,20 +346,20 @@ following criteria:
 \item
   Every word is a two-syllable iamb, which enhances memorability in that
   it reduces the number of words that could possibly follow another
-  without reference to the wordlist.\\
+  without reference to the wordlist.
 \item
-  Words have no punctuation or diacritics in them.\\
+  Words have no punctuation or diacritics in them.
 \item
   We limit the number of words that share common four-letter prefixes
-  like ``over- '', ``semi- '', and ``tran- '' for the sake of
-  autocomplete features in text inputs.\\
+  like ``over-'', ``semi-'', and ``tran-'' for the sake of
+  autocomplete features in text inputs.
 \item
-  No two words are exact homophones.\\
+  No two words are exact homophones.
 \item
-  We err on the side of words which are relatively common.\\
+  We err on the side of words which are relatively common.
 \item
   Many words are plurals or verbs that end with `s', so we limit words
-  beginning with `s' to avoid confusion in speech.\\
+  beginning with `s' to avoid confusion in speech.
 \item
   We err on the side of words which result in absurd, concretely visual
   combinations inspired by memory palace techniques, though it should be
@@ -381,7 +373,7 @@ Groundwire ID is a platform-agnostic protocol for persistent
 decentralized identities belonging to humans and autonomous AI agents.
 
 The user is assumed to hold a \textsc{bip}-32 (\citeyear{BIP0032}) HD crypto wallet
-that can derive an Ed25519 keypair, whose pubkey will be encoded as a
+that can derive an Ed25519 keypair whose pubkey will be encoded as a
 mnemonym. (Groundwire Foundation software uses the iambic English
 wordlist, but no wordlist is specified at the protocol level.
 Applications may use whichever wordlist they choose or let the user
@@ -391,7 +383,7 @@ In practice, Groundwire ID is a protocol for tweaking pubkeys with
 publicly-verifiable evidence of their sybil resistance value, where we
 take the position that ``sybil resistance value'' is mostly
 financial/thermodynamic cost plus supplementary analytics
-subject to some user-defined policy that determines who can send
+subject to some policy configured by the user that determines who can send
 packets their way \S\ref{offchain-revelation}.
 
 This tweak has two components: \textsc{pki} metadata, and a pointer to
@@ -403,19 +395,25 @@ there wasn't an offchain anchor pointing to onchain data, then anyone
 could come in and attest to ownership of any comet and \texttt{\%ord-watcher}
 would naively believe them.''
 
-\begin{lstlisting}[style=listingblock]
+\begin{lstlisting}[style=listingcode]
 // pseudocode to produce a Groundwire ID tweak
-(concatenate 0 [(length-encode 'urbtc') [(length-encode 8) (length-encode (serialize pki-evidence))]])
+(concatenate [(length-encode 'urbtc')
+                [(length-encode 8)
+                 (length-encode
+                  (serialize pki-evidence))]])
 \end{lstlisting}
 
-Where \texttt{(concatenate\ 0\ ...)} concatenates an array of
-\texttt{{[}bitwidth\ bitstring{]}} pairs according to block size
-\texttt{0}. This produces a bitstring which is hashed into the pubkey to
-couple it to the \textsc{pki} evidence.
+Where \texttt{(concatenate\ ...)} concatenates an array of
+\texttt{{[}bitwidth\ bitstring{]}} pairs. This produces a
+bitstring which is hashed into the pubkey to couple it to the \textsc{pki} evidence.
 
-\begin{lstlisting}[style=listingblock]
+\begin{lstlisting}[style=listingcode]
 // pseudocode to apply the tweak to a pubkey
-(sha256 pubkey (concatenate 0 [(length-encode 'urbtc') [(length-encode 8) (length-encode (serialize pki-evidence))]]))
+(sha256 pubkey
+  (concatenate [(length-encode 'urbtc')
+                  [(length-encode 8)
+                   (length-encode
+                    (serialize pki-evidence))]]))
 \end{lstlisting}
 
 The first two items in this array are the \textsc{pki} metadata \S\ref{pki-metadata}, and the
@@ -441,28 +439,28 @@ simple, freezable format?
 
 \subsection[\textsc{pki} metadata]{PKI metadata}\label{pki-metadata}
 
-A \textsc{pki} may be one of several on the same technical substrate, e.g.~the
+A \textsc{pki} may be one of several on the same technical substrate, e.\,g.\ the
 same blockchain. The tweak names this \textsc{pki} by a string of
 \texttt{\^{}{[}a-z{]}{[}a-z0-9-{]}*\$}. In the
 \texttt{(length-encode\ \textquotesingle{}urbtc\textquotesingle{})}
 example above, the name of the \textsc{pki} is ``urbtc'', which is Groundwire's
 Urbit \textsc{pki} on Bitcoin. Verifiers will resolve this name however
 appropriate: in urbtc, the \textsc{pki} name is also the name of the local
-application a node will use to verify identities on that \textsc{pki}, which may
+application an Urbit node will use to verify identities on that \textsc{pki}, which may
 be one of several \textsc{pki}s they follow.
 
 The other piece of \textsc{pki} metadata included in the tweak is
 \texttt{(length-encode\ 8)}, which in this case tells us that the pubkey
-was tweaked against urbtc version 8K. \textsc{pki}s may support some Kelvin
+was tweaked against urbtc version 8K. \textsc{pki}s may support some kelvin
 versions \S\ref{ossification} and not others, and may have their own control flow for
 handling tweaks on old versions.
 
 One purpose of this is that it namespaces Groundwire IDs across \textsc{pki}s:
 the same inputs will not generate the same Groundwire ID on two
 different \textsc{pki}s, even if they're on the same substrate. The probability
-of the same Groundwire ID (or, the same verified nym) appearing on two
+of the same Groundwire ID (that is, the same verified nym) appearing on two
 \textsc{pki}s is astronomically tiny. This improbability leaves open a design
-space for cross-\textsc{pki} interoperability, e.g.~``teleburning'' Ethereum
+space for cross-\textsc{pki} interoperability, e.\,g.\ ``teleburning'' Ethereum
 assets onto Bitcoin Ordinal inscriptions \citep{Rodarmor2026Teleburning}, but at time of
 writing we have no plans to pursue this.
 
@@ -474,9 +472,9 @@ the \textsc{pki} and 2) judge the sybil resistance value of that data, according
 to some policy hard-coded in the verifier or set by the user.
 
 The content of the \texttt{pki-evidence} in the
-\texttt{(length-encode\ (serialize\ pki-evidence))} pseudocode above
-For example, in urbtc \S\ref{urbtc-pki-evidence} the \textsc{pki} evidence is the
-relative ordinal number \citep{Rodarmor2022Ordinals} of a Bitcoin sat
+\texttt{(length-encode\ (serialize\ pki-evidence))} pseudocode above will vary by PKI.
+For example, in urbtc \S\ref{urbtc-implementation} the \textsc{pki} evidence is the
+relative ordinal number \citep{Rodarmor2022Ordinals} of a sat
 in a \textsc{utxo} belonging to the Bitcoin wallet that generated the Groundwire
 ID in question. We avoid using absolute ordinal numbers for performance
 reasons.
@@ -506,7 +504,7 @@ An urbtc tweak looks like this:
 
 \begin{lstlisting}[style=listingcode]
 // pseudocode
-(concatenate 0 [(length-encode 'urbtc')
+(concatenate [(length-encode 'urbtc')
                 [(length-encode 8)
                  (length-encode
                   (serialize spawn-sont))]])
@@ -514,14 +512,14 @@ An urbtc tweak looks like this:
 
 Where the \texttt{spawn-sont} is a tuple of \texttt{\{txid\ vout\ offset\}}:
 
-\begin{itemize}
+\begin{itemize}[noitemsep,topsep=2pt]
 
 \item
-  \texttt{txid}: ID of a Bitcoin transaction whose outputs contain a
-  \textsc{utxo} we are interested in.\\
+  \texttt{txid}: ID of a Bitcoin transaction whose outputs contain
+  the relevant \textsc{utxo}
 \item
   \texttt{vout}: the relevant \textsc{utxo}'s position in a 0-indexed array of
-  the ``vector of outputs'' from this transaction.\\
+  the ``vector of outputs'' from this transaction.
 \item
   \texttt{offset}: relative ordinal number of a sat in this \textsc{utxo}; the
   Groundwire ID is pinned to this sat, which we will follow through
@@ -533,7 +531,7 @@ introduced Groundwire's notion of multiple \textsc{pki}s to Jael, along with van
 tasks for registering and suspending \textsc{pki}s. Each corresponds to the name
 of a Gall agent permissioned to update information for one \textsc{pki} (pending
 userspace permissions work currently underway). We additionally
-introduce a ``Suite C'' cryptographic core utilized by Groundwire
+introduced a ``Suite C'' cryptographic core utilized by Groundwire
 comets, detailed in \textsc{uip}-0136 (\citeyear{UIP-0136}).
 
 When a ship receives an introductory ``self-attestation'' packet from a
@@ -541,21 +539,21 @@ Suite C comet, the comet includes the \textsc{pki} data needed for verification.
 Ames then passes this data to Jael and subscribes for a verdict on
 whether the self-attestation is valid. Jael passes the data to the
 corresponding agent for that \textsc{pki}, and upon receiving a positive update
-sends a fact to Ames along the previously mentioned subscription path,
+sends a fact to Ames along the relevant subscription,
 and Ames completes the handshake appropriately. From here, the userspace
 agent can continue to watch the \textsc{pki} substrate for further key rotations
 for that comet.
 
 Due to the confidential nature of key rotations on urbtc, userspace
 agents only know upon seeing a key rotation that that identity's old
-keys are now out-of-date; they will not know what the new networking
+keys are now out-of-date; they do not know what the new networking
 keys are until receiving a new self-attestation packet from that
 identity. The Urbit ship must, then, ignore all new packets from that
 identity except for self-attestation packets. We introduce the
 \texttt{\%snob} task to Ames (as a counterpart to \texttt{\%snub}) which
 is used to put an identity into this limbo state.
 
-In addition to your Azimuth sponsor---which maintains contact with
+In addition to your sponsor---which maintains contact with
 your ship for relay and route rediscovery from peers if your node is
 behind a WiFi router---we extended the routing hint options in
 \texttt{\$point:jael} with a \texttt{\$fief}, an IPv4, IPv6, or \textsc{dns}
@@ -570,7 +568,6 @@ urbtc is implemented across \href{https://github.com/gwbtc/urbit}{\texttt{gwbtc/
 and \href{https://github.com/gwbtc/groundwire}{\texttt{gwbtc/groundwire}}. We aim to upstream our Arvo and Vere work
 into the corresponding \href{https://github.com/urbit/urbit}{\texttt{urbit/urbit}} and \href{https://github.com/urbit/vere}{\texttt{urbit/vere}}
 repos.
-and \href{https://github.com/gwbtc/groundwire}{\texttt{gwbtc/groundwire}}.
 
 \subsection{Confidential comets}\label{confidential-comets}
 
@@ -579,7 +576,7 @@ used ordinal inscriptions \citep{Rodarmor2026Inscriptions}. Inscriptions
 serialize data as chained \texttt{OP\_PUSH} opcodes of a \textsc{utxo}'s Taproot
 script in a ``commit'' transaction, then a ``reveal'' transaction makes
 that hashed onchain data legible as a plaintext \textsc{mime} response. This
-required all nodes to index all Bitcoin blocks to find urbtc reveal
+required all Urbit nodes to index all Bitcoin blocks to find urbtc reveal
 transactions and use those to maintain their local \textsc{pki} state.
 
 In testing we found that the computational burden of this indexing was
@@ -589,7 +586,7 @@ their peers, which we ameliorated with a stopgap trusted snapshot system
 for onboarding. This helped testers by skipping an initial sync from our
 chosen block 943,140 to the present, but we couldn't help them speed up
 recovery from unplanned downtime because Urbit doesn't allow users to
-overwrite \textsc{pki} state. This snapshot system was just a convenience, and
+overwrite \textsc{pki} state outwith Jael's \textsc{api}. This snapshot system was just a convenience, and
 injecting a null value where the snapshot should have been would trigger
 re-indexing of the chain from block 943,140.
 
@@ -640,14 +637,14 @@ wallet keypair to derive the \textsc{p2tr} key is a Merkle root committing to th
 serialized Nock noun containing the comet name, its life (key rotation)
 and rift (continuity-breaking key rotation), latest networking pubkey,
 routing hints, and at least one of a sponsor (Urbit ID) or a fief
-(IP/\textsc{dns}).
+(\textsc{ip/dns}).
 
 For an output hosting one ID and bound sat, its \textsc{pki} state is a Merkle
 leaf at axis 2 (first left child), and currently this is the only
 attestation type in the protocol. Batch custodial outputs containing
 multiple bound sats (``shared \textsc{utxo}s'') aren't yet supported on the alpha
 network, but we're exploring the design space particularly with respect
-to potential L2 architectures. So except in case of breach (see below)
+to potential L2 architectures. So except in case of a breach (Urbit's continuity-breaking key rotation)
 the state hash is the root hash which is the scalar tweak. We reserve
 the right-hand subtree for future protocol expansion to support other
 attestation use-cases, such as display names and profile images,
@@ -657,11 +654,11 @@ At spawn the initial networking key is the (preimage of the) name
 itself, but subsequent state commitments include both the name and a
 distinct latest messaging pubkey. Every time an output bearing the sat
 is spent, we require the new \textsc{utxo} containing it to commit the current
-tip of its \textsc{pki} state, even if the spend is simple custody-management
-e.g.~transferring to a fresh address, and the committed state duplicates
+tip of its \textsc{pki} log, even if the spend is simple custody-management
+e.\,g.\ transferring to a fresh address, and the committed state duplicates
 the previous tip. Otherwise, the vocabulary of update types that we
 support is 1) rotate networking key 2) update routing info 3) publish an
-attestation packet and 4) continuity breach. Continuity breaches are
+attestation and 4) continuity breach. Continuity breaches are
 signalled by the presence of a 0-valued second leaf at axis 3.
 
 Plaintext publication of \textsc{pki} data is an opt-in second layer ``public
@@ -669,7 +666,7 @@ attestation'' in an added \texttt{OP\_RETURN} output from the published
 state transaction. This serves two purposes: 1) permissionless
 advertising and discovery of public bootstrap sponsors, and 2)
 peer-recovery-of-last-resort for ships partitioned from each other by a
-mutual routing failure (e.g.~extended sponsor downtime).
+mutual routing failure (e.\,g.\ extended sponsor downtime).
 
 Note that we did not specify any tapscript encoding (Bitcoin Script in
 Merkle leaves that a \textsc{p2tr} spend can execute with an inclusion proof) of
@@ -679,7 +676,7 @@ Segwit fee discount, as in the ordinals inscription mechanism. However,
 witness inscriptions bypass a Bitcoin node operator's ability to filter
 the data without foregoing witness verification of signature operations
 as well, and the Segwit discount is actively harmful in the Groundwire
-setting since our sibyl resistance mechanism \emph{is}
+setting since our sybil resistance mechanism \emph{is}
 Bitcoin-denominated costliness.
 
 Non-tapscript Merkle data commitments in the output chain are, instead,
@@ -693,7 +690,7 @@ client-side validated (\textsc{csv}) protocol.
 
 \subsubsection{Offchain revelation}\label{offchain-revelation}
 
-Comets introduce themselves offchain by exchanging attestation packets
+In Urbit's peer-to-peer networking flow, comets introduce themselves offchain by exchanging attestation packets
 with a peer, and provide a refreshed packet when they broadcast new
 confidential attestations of \textsc{pki} state onchain.
 
@@ -707,12 +704,12 @@ of the name. If the \textsc{pki} tag is recognized by the receiver's Jael, it
 will forward the packet to the responsible \textsc{pki} agent and chain client
 for validation. Otherwise, it will treat the sender as a legacy comet
 and require it to be at life \texttt{1} and sign with its identity key. For urbtc
-ships, the required information is outpoints and block heights for the
+comets, the required information is outpoints and block heights for the
 sender's entire onchain history, and plaintext state commitments with
 Schnorr inclusion proofs for their current rift.
 
 By the time we get to a production launch, ships should be able to
-configure their own sibyl-resistance policies including minimum
+configure their own sybil resistance policies including minimum
 acceptable values for costliness or proof-of-funds needed to accept a
 peer. That any ship may have their own secret policy obscures the
 requirements that a bad actor needs to meet to spawn a usable batch of
@@ -721,17 +718,17 @@ a negative policy decision prevents peer discovery from happening at
 all, ships may only ever further constrain whichever policy is applied
 by their sponsor. Sponsors might advertise these policies as a point of
 differentiation. Sponsees may route around their sponsors' policies by
-accepting a new peer's keyfile out-of-band, e.g.~by scanning a QR code
-or tapping an NFC tag in-person.
+accepting a new peer's keyfile out-of-band, e.\,g.\ by scanning a QR code
+or tapping an \textsc{nfc} tag in-person.
 
 Since the attestation packet format specifies the content, location, and
 encoding of confidential attestations, and is itself broadcast in a
-public attestation, we can use a single Kelvin version on the packet to
+public attestation, we can use a single kelvin version on the packet to
 cover both layers of the protocol, while freezing the ID tweak-data
-format straight to 0K. The attestation packet's current Kelvin version
+format straight to 0K. The attestation packet's current kelvin version
 is 8K.
 
-\section{Wire \textsc{uri}s}\label{wire-uris}
+\section[Wire \textsc{uri}s]{Wire URIs}\label{wire-uris}
 
 The Wire \textsc{uri} scheme enables Groundwire IDs to make cryptographic claims
 on other namespaces with minimal integration between Groundwire and that
@@ -743,18 +740,16 @@ There are two forms of Wire \textsc{uri} (or ``wire''): signed, and unsigned.
 
 An unsigned wire is of the form:
 
-\begin{lstlisting}[style=listingblock]
+\begin{lstlisting}[style=listingcode]
 wire://id/tag/path
 \end{lstlisting}
 
 \noindent
 as in these examples:
 
-\begin{lstlisting}[style=listingblock]
-wire://aback.baboon.cabal.deceives.enough/
-       https/groundwire.io
-wire://abyss.beguiles.conceal.decrypt.engraved/
-       geo/38.89278,-77.04583
+\begin{lstlisting}[style=listingcode]
+wire://aback.baboon.cabal.enough/https/groundwire.io
+wire://abyss.conceal.decrypt/geo/38.89278,-77.04583
 \end{lstlisting}
 
 An unsigned wire's \texttt{id} is a Groundwire ID in the form of a bare
@@ -764,25 +759,25 @@ refers to some protocol that a client may or may not know what to do
 with, and the \texttt{path} is any \texttt{/}-separated path that
 corresponds to a resource the client can locate via that protocol.
 
-An unsigned wire may be created as a human-readable reference to a
+An unsigned wire may be generated by the client as a human-readable reference to a
 signed wire stored elsewhere in the client. Unlike signed wires, they do
 not self-describe a version number, so a client parsing an unsigned wire
 without reference to a corresponding signed wire would have to handle a
-case if the format ever changed during a Kelvin version decrement in the
+case if the \texttt{/tag/path} format ever changed during a kelvin version decrement in the
 signed wire.
 
 \subsection{Signed wires}\label{signed-wires}
 
 Signed wires are of the form:
 
-\begin{lstlisting}[style=listingblock]
+\begin{lstlisting}[style=listingcode]
 wire://id/base64url
 \end{lstlisting}
 
 \noindent
 as in this example:
 
-\begin{lstlisting}[style=listingblock]
+\begin{lstlisting}[style=listingcode]
 wire://abate.banal.campaign.debate.elite/8BEBAC9odHRw
        cy9leGFtcGxlLmNvbRam2y5UYO8BaCbZDGFToaaToJugs8
        BX_uEOs3Hy7M95LhTn21s3_Mg-wH9WG-CsUxm2JGWjAbou
@@ -807,9 +802,9 @@ The 12-bit header has this structure:
   the signer has signed a hash of the \texttt{/tag/path} string
   (\texttt{1}), or the \texttt{/tag/path} string concatenated with the
   response we will receive from that path (\texttt{0}). This flag bit is
-  not subject to Kelvin-versioning.
+  not subject to kelvin versioning.
 \item
-  \textbf{Next 3 bits:} Kelvin version number. Wires launch at 7K, or
+  \textbf{Next 3 bits:} kelvin version number. Wires launch at 7K, or
   \texttt{111}. Everything to the right of this is version-dependent.
 \item
   \textbf{Next 8 bits:} The bytewidth of the decoded \texttt{/tag/path}
@@ -828,35 +823,35 @@ The payload has this structure:
   \textbf{Next \emph{n} bytes:} The plaintext \texttt{/tag/path} string,
   where \emph{n} is specified in the header
 \item
-  \textbf{Next 64 bytes:} 7K's EdDSA signature of a 32-byte SHA256 of
-  either \texttt{key\_rotation\ \textbar{}\textbar{}\ tag\_path} or
-  \texttt{key\_rotation\ \textbar{}\textbar{}\ tag\_path\ \textbar{}\textbar{}\ content\_hash},
-  where \texttt{content\_hash} is itself a 32-byte hash of the octet
+  \textbf{Next 64 bytes:} 7K's EdDSA signature of a 32-byte \textsc{sha}-256 of
+  either \lstinline[style=inlinecode]{key_rotation || tag_path} or
+  \lstinline[style=inlinecode]{key_rotation || tag_path || content_hash},
+  where \lstinline[style=inlinecode]{content_hash} is itself a 32-byte hash of the octet
   stream a request on this path will receive. What exactly goes in the
   octet string depends on the \texttt{/tag} protocol; the signer may
   assume that a relevant client knows what kind of response to expect
   for a given protocol.
 \end{itemize}
 
-Clients can verify a signed wire with no content on receipt. If they
+Clients can verify a signed wire that has no content on receipt. If they
 receive a signed wire with content, they should reconstruct the content
 hash on receipt and verify that against the signature before further
 processing.
 
 Since Groundwire ID persists across key rotations, the client must
 verify the signature using the public key that corresponded to the
-wire's \texttt{id} at the key rotation signed in the wire. Key rotation
+wire's \texttt{id} at the key rotation signed in the payload. Key rotation
 events should not invalidate signed wires from previous key rotations,
 as verifiers should be able to get the keypair that corresponds to the
 wire from historical state. That historical state may be public
-(e.g.~onchain) or privately distributed among peers, relays, or other
+(e.\,g.\ onchain) or privately distributed among peers, relays, or other
 network providers. (\textsc{pki}s such as urbtc may implement a special,
 continuity-breaking key rotation event that \emph{does} invalidate
 previous signatures, upon which peers should treat all historical state
 for that ID as having been wiped. If an ID signed a wire at keypair
 \texttt{2} before and after the continuity breach, only the
 post-continuity-break keypair \texttt{2} should be under consideration
-by the verifier.)
+by the verifier. All signatures from before the breach should be considered invalid.)
 
 Some example use-cases for Wire \textsc{uri}s are as follows:
 
@@ -885,7 +880,7 @@ Some example use-cases for Wire \textsc{uri}s are as follows:
   their Groundwire node.
 \item
   \texttt{/ssh}: A \textsc{vps} host signs their host key fingerprint,
-  supplementing trust-on-first-use for users who want to SSH into that
+  supplementing trust-on-first-use for users who want to \textsc{ssh} into that
   server.
 \item
   \texttt{/geo}: A Groundwire ID signs coordinates of a geocache.
@@ -911,7 +906,7 @@ derived from root-level Groundwire IDs.
 
 \subsection{Named data networking}\label{named-data-networking}
 
-Alongside Kelvin versioning \S\ref{ossification}, the other part of Urbit that we aim
+Alongside kelvin versioning \S\ref{ossification}, the other part of Urbit that we aim
 to lift out of that system is Directed Messaging (colloquially called
 ``Mesa'' by Urbit developers), which was detailed in a previous issue of
 this journal \citep{DirectedMessaging2026}.
@@ -922,7 +917,7 @@ correspond to separate physical machines in a peer-to-peer network or as
 virtual nodes on a cloud server.
 
 \textsc{ndn} is sometimes described with terms like ``data-oriented'' as opposed
-to ``connection-oriented'' \textsc{tcp}/IP, and one can think of Groundwire as a
+to ``connection-oriented'' \textsc{tcp/ip}, and one can think of Groundwire as a
 data-oriented sybil resistance as opposed to connection-oriented sybil
 resistance (\textsc{captcha}, JS challenge, etc.).
 
@@ -947,7 +942,7 @@ as protocol invariants:
   All messages should be requests or authenticated responses carrying
   named data.
 \item
-  Authentication should happen on packets and not sessions.\\
+  Authentication should happen on packets and not sessions.
 \item
   Source-independent single hop routing should be sufficient for
   networking, which minimizes bookkeeping required for nodes.
@@ -970,21 +965,20 @@ interested in:
 \item
   Every path is signed by its publisher and has a version number, and
   there is currently no way to request data at a path without knowing
-  its version number, so npm-style unversioned imports are impossible.
+  its version number, so unversioned imports are impossible.
 \item
   Referentially-transparent paths under identities with key rotation
   enable more long-lived authorities over links, and Mesa's caching and
   relay properties trivialize distributed archives and other \textsc{cdn}-like
   setups.
 \item
-  Cheap, mechanically trivial \textsc{cdn}s distribute spread load away from
-  content publishers, so the cost of responding to reads trends
-  asymptotically to zero. Effectful writes must be signed by the
+  Cheap, mechanically trivial \textsc{cdn}s distribute load away from
+  content publishers. Effectful writes must be signed by the
   Groundwire ID that originally sent them via \textsc{hmac}. The likelihood that
-  a write comes from a disposable ID in a botnet can be priced at the
+  a write or access-controlled read comes from a disposable ID in a botnet can be priced at the
   moment of receipt of the first packet: either the peer writing to us
   is known and validated, or we ask for a self-attestation packet that
-  includes the \textsc{pki} evidence described in \S\ref{pki-evidence}.\\
+  includes the \textsc{pki} evidence described in \S\ref{pki-evidence}.
 \item
   Publishers and relays don't need to verify connections because there
   are no connections. Reads to access-controlled paths have similar
@@ -1005,7 +999,7 @@ left as exercises for network developers, including:
 \item
   Caching policies.
 \item
-  P2P economic incentives (congestion control, relays, \textsc{cdn}s, etc.).
+  Peer-to-peer economic incentives (congestion control, relays, \textsc{cdn}s, etc.).
 \item
   Interaction with anonymous requesters.
 \item
@@ -1017,20 +1011,20 @@ will be made public once it's ready for a public alpha release.
 
 \subsection{Post-quantum signatures}\label{post-quantum-signatures}
 
-In the first instance, Groundwire's persistent cryptographic identity
-across key rotations is suited to networks like Nostr, which have no
+At this point in time Groundwire's persistent cryptographic identity
+across key rotations is aimed at networks like Nostr, which have no
 affordance for transferring identity in the event of a compromised
-private key. At this point in time, key rotation is a narrow use-case
+private key. Key rotation is presently a narrow use-case
 that even diligent users should rarely have to go through.
 
-Cryptographically-relevant quantum computing makes key rotation a much
+However, cryptographically-relevant quantum computing could make key rotation a much
 more salient issue, even in normal circumstances. (PQ keypairs in
 stateful schemes like \textsc{xmss} and \textsc{lms} are finite, enumerated trees of
 single-use keypairs; the number of keypairs in a tree may be as low as
-2\textsuperscript{5} or up to 2\textsuperscript{25}, \citet{NIST800208}) With Google recommending
+2\textsuperscript{5} or up to 2\textsuperscript{25} \citep{NIST800208}.) With Google recommending
 migration to post-quantum cryptography by 2029 \citep{GoogleQuantumAI2026}, technical
 communities like Bitcoin are urgently weighing their options for
-migration of legacy wallets to PQC.
+migration of legacy wallets to \textsc{pqc}.
 
 We use ``pre-quantum'' signatures for urbtc and Wire \textsc{uri}s at their
 current kelvin versions because this is the status quo in both Urbit
@@ -1040,7 +1034,7 @@ the signature features that will be difficult or impossible to achieve
 in the known PQ algorithms that are feasible for Bitcoin.
 
 Our strategy for an early, low-overhead migration precisely mirrors the
-\textsc{bip}-360 ``Pay-to-Merkle-Root'' quantum resistance project (\citeyear{BIP0360}):
+\textsc{bip}-360 ``Pay-to-Merkle-Root'' quantum resistance project \citep{BIP0360}:
 
 \begin{itemize}[noitemsep,topsep=2pt]
 
@@ -1060,7 +1054,7 @@ whole, but a major goal will be to improve modularity of cryptosystem
 adoption in the future as well as upgrading the core crypto suites.
 
 Once Bitcoin developers and hardware providers settle on a PQ migration
-plan, we will develop a migration plan from pre- to post-quantum Kelvin
+plan, we will develop a migration plan from pre- to post-quantum kelvin
 versions which preserve continuity of identity and attestations to the
 fullest extent possible.
 
@@ -1084,9 +1078,9 @@ likewise derive their own children, and so on.
 
 This hierarchical recursion of the HD wallet tree-structure gives us a
 natural way to represent relationships of ownership, responsibility, and
-granular access control amongst human-driven identities (e.g.~multiple
+granular access control amongst human-driven identities (e.\,g.\ multiple
 signing devices belonging to one human) and AI agent identities
-(e.g.~multiple agents belonging to one human, multiple subagents
+(e.\,g.\ multiple agents belonging to one human, multiple subagents
 belonging to one agent, etc.). Since child keys are derived by tweaking
 the parent with an arbitrary nonce, we can use this to commit to
 descriptors for the role, origin, authority, etc. of the child,
@@ -1115,20 +1109,14 @@ requirements:
   and subject to whichever calculation a verifier chooses.
 \item
   Parent/child relationships can be expressed in the namespace and
-  children may be identified via their parents; e.g.~if AI agent
+  children may be identified via their parents; e.\,g.\ if AI agent
   \texttt{..denounce...escape} belongs to human operator
   \texttt{.abet...baboon}, they might be identified in a UI as
-  \texttt{.abet...baboon::denounce...escape} , or
+  \texttt{.abet...baboon::denounce...escape}, or
   \texttt{::abet...escape}, or some other representation. Namespaces
   belonging to a derived identity may be viewed as subtrees of their
   root identity's namespace.
 \end{enumerate}
-
-We have no need to specify a protocol-level solution for attenuated
-permissions and access control between parent and child identities;
-simply proving that one ID was derived from another gives us the
-provenance we need, and gives third-party developers a base on which to
-build their own permissions solutions.
 
 \section{Conclusion}\label{conclusion}
 
@@ -1179,7 +1167,7 @@ Philip Monk wrote that ``system modules should be designed to be frozen
 permanently; conversely, Urbit consists of that system software which
 admits of a Kelvin version.''
 
-What is a Kelvin version? The 2016 Urbit whitepaper \citep{Whitepaper} doesn't define
+What is a kelvin version? The 2016 Urbit whitepaper \citep{Whitepaper} doesn't define
 it. At time of writing, no formal specification has been signed off on
 by the Urbit Foundation or Urbit's core developers. We do find one
 subsubsection of informal description in Yarvin's 2010 blog post
@@ -1191,41 +1179,47 @@ zero, the system can no longer be changed. At 1K, one more modification
 is possible. And so on.'' \citep{Yarvin2010}
 
 Today, Urbit's OS is distributed at 408K. This version number tags the
-\texttt{zuse.hoon} file which defines Urbit's kernel module APIs; the
-modules themselves are not Kelvin versioned. Zuse is the ``outermost''
-layer of Urbit's OS, and deeper layers may have their own Kelvin
+\texttt{zuse.hoon} file which defines Urbit's kernel module \textsc{api}s; the
+modules themselves are not kelvin versioned. Zuse is the ``outermost''
+layer of Urbit's OS, and deeper layers may have their own kelvin
 versions. (The Hoon standard library at 135K, for instance.)
 
-This raises the question of Kelvin-versioned dependency management. In
+This raises the question of kelvin-versioned dependency management. In
 ``Towards a Frozen Operating System,'' Yarvin and Pauly wrote:
 
+\begin{quote}
 The right way for this trunk to approach absolute zero is
 to ``telescope'' its Kelvin versions. The rules of telescoping are
 simple:
 
-\begin{quote}
-If tool B sits on platform A, either both A and B must be
-at absolute zero, or B must be warmer than A.
-Whenever the temperature of A (the platform) declines,
-the temperature of B (the tool) must also decline.
-B must state the version of A it was developed against.
-A, when loading B, must state its own current version, and the warmest
-version of itself with which it's backward-compatible.
-Of course, if B itself is a platform on which some
-higher-level tool C depends, it must follow the same constraints
-recursively.
-\end{quote}
+\begin{enumerate}[noitemsep,topsep=2pt]
+\item
+  If tool B sits on platform A, either both A and B must be at absolute
+  zero, or B must be warmer than A.
+\item
+  Whenever the temperature of A (the platform) declines, the
+  temperature of B (the tool) must also decline.
+\item
+  B must state the version of A it was developed against.
+\item
+  A, when loading B, must state its own current version, and the
+  warmest version of itself with which it's backward-compatible.
+\item
+  Of course, if B itself is a platform on which some higher-level tool
+  C depends, it must follow the same constraints recursively.
+\end{enumerate}
 
 The important effect of obeying rule 2: in a tall trunk,
 it's sufficient to state your dependency on the platform directly below
 you. Suppose C sits on B, which sits on A and exports features of A. C
 can state only the version of B it's written against, because when A
 chills, B must also chill.
+\end{quote}
 
 In practice, Urbit core developers update Zuse and its dependencies at
-once: every Urbit release is either a new Zuse or a non-Kelvin patch to
-the current distribution of Zuse. Any change to any Kelvin-versioned
-file below Zuse will be slated for release in the next Zuse release.
+once: every Urbit release is either a new Zuse kelvin or a non-kelvin patch to
+the current distribution of Zuse. Any change to any kelvin-versioned
+file below Zuse will be slated for release in the next Zuse kelvin release.
 Significant changes to unversioned kernel modules usually go in the next
 Zuse release, but this is at the discretion of the Urbit Core Guild.
 
@@ -1242,7 +1236,7 @@ code and data in the event that a 407K update ever arrives.
 The maintenance burden this places on Urbit userspace developers is
 nontrivial: most Urbit userspace code available online will not compile
 against Zuse 408K. This fact runs counter to one of the stated goals of
-Kelvin versioning, which is perfect forward compatibility. Quoting
+kelvin versioning, which is perfect forward compatibility. Quoting
 ``Towards a Frozen Operating System'':
 
 \begin{quote}
@@ -1256,15 +1250,15 @@ C compilers will compile any future C program. So C has not yet achieved
 perfect forward compatibility. By definition, a frozen system is
 compatible both forward and backward. So C is mature, but it could still
 get more mature.
-\end{quote}
 
 The point of a frozen OS is to shoot for infinite
 maturity. Obviously a frozen platform is compatible forever in both
 directions.
+\end{quote}
 
-The Urbit Foundation is doing prototype work on ``Kelvin shimming'',
+The Urbit Foundation is doing prototype work on ``kelvin shimming'',
 which allows Urbit to run userspace applications built against previous
-Kelvins in their own sandbox, but what form that solution will take is
+kelvins in their own sandbox, but what form that solution will take is
 still an open question.
 
 \subsection{Consensus}\label{consensus}
@@ -1289,7 +1283,7 @@ record of Bitcoin's transaction history, without question. If one
 finalized chain is overwritten by a longer one, so be it. This simple
 decentralized governance mechanism has survived many bitter disputes in
 Bitcoin's history. Amongst competing Bitcoin forks, a single chain holds
-onto a supermajority of nodes due to simple network effects and the
+onto almost all nodes due to simple network effects and the
 game-theory of proof-of-work: in 2014 Vitalik Buterin wrote that ``when
 contributing one's work to the blockchain, a miner must make the choice
 of which of all possible forks to contribute to (or whether to try to
@@ -1300,7 +1294,7 @@ you to split your mining power among the different votes; the dominant
 strategy is always to put your mining power exclusively on the fork that
 you think is most likely to win.'' \citep{Buterin2014}
 
-Technical debates amongst Bitcoin developers, such as \textsc{bip}-110 (\citeyear{BIP0110}), hold it as a
+Technical debates amongst Bitcoin developers, such as that around \textsc{bip}-110 (\citeyear{BIP0110}), hold it as a
 priority that independent and hobbyist node operators using consumer
 hardware should be able to feasibly replay the history of the chain to
 arrive at its current state. This property is essential for
@@ -1343,8 +1337,8 @@ same ID, but if we nonetheless receive a self-attestation packet from an
 ID on Solana claiming to be an ID on Bitcoin we are about to send money
 to, who do we trust? Which of our \textsc{pki} gateways is broken or malicious?
 Which record of history is correct? What are the semantics by which
-history is recorded, and how do we reconcile those semantics if two
-consensus mechanisms disagree?
+history is recorded, and how do we reconcile those histories if two
+consensus mechanisms use different semantics?
 
 At this point we may fall back on human judgement, but Groundwire
 assumes that 99.9\% of internet users are not humans and cannot be held
@@ -1354,7 +1348,7 @@ If we grant that even Bitcoin's longest-chain rule is inevitably backed
 by the human drama of social consensus, institutional governance,
 conflicting incentives, and spirited public debate, we think this is all
 the more reason to secure those out-of-band techno-social systems
-against a flood of highly capable bad actors with Kelvin-versioned
+against a flood of highly capable bad actors with kelvin-versioned
 software and sybil-resistant identity and networking. By hosting the \textsc{pki}
 onchain, Bitcoin could secure the host environment in which its own
 developers, node operators, and other stakeholders work in public and
@@ -1379,9 +1373,6 @@ controlled by nodes that are not cooperating to attack the network,
 they'll generate the longest chain and outpace attackers.''
 
 May the longest proof-of-work chain win.
-
-% \section{References}\label{references}
-
 
 \selectlanguage{USenglish}
 \printbibliography
