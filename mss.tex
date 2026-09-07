@@ -488,11 +488,11 @@ operations require transaction fees paid to infrastructure providers, an
 ID should accrue sybil resistance value over successive key rotations
 and miscellaneous transactions.
 
-\subsection{urbtc implementation}\label{urbtc-implementation}
+\subsection{Urbtc implementation}\label{urbtc-implementation}
 
 \sloppy
 The centerpiece of our public alpha is urbtc, a protocol for maintaining
-an Urbit \textsc{pki} on the Bitcoin blockchain. urbtc only supports Urbit
+an Urbit \textsc{pki} on the Bitcoin blockchain. Urbtc only supports Urbit
 ``comets''---nodes in Urbit's self-signed 128-bit namespace---which
 can be spawned by anyone and have no speculative value. Ordinarily,
 comets are reliant on one of \mbox{Urbit's} 256 ``galaxy'' root nodes to do
@@ -564,7 +564,7 @@ comets running on mobile or a home server, and optionally supply
 value-add services, so we're inclined to grow this set early to enable a
 robust network topology and incentivize development of QoS protocols.
 
-urbtc is implemented across \href{https://github.com/gwbtc/urbit}{\texttt{gwbtc/urbit}}, \href{https://github.com/gwbtc/vere}{\texttt{gwbtc/vere}},
+Urbtc is implemented across \href{https://github.com/gwbtc/urbit}{\texttt{gwbtc/urbit}}, \href{https://github.com/gwbtc/vere}{\texttt{gwbtc/vere}},
 and \href{https://github.com/gwbtc/groundwire}{\texttt{gwbtc/groundwire}}. We aim to upstream our Arvo and Vere work
 into the corresponding \href{https://github.com/urbit/urbit}{\texttt{urbit/urbit}} and \href{https://github.com/urbit/vere}{\texttt{urbit/vere}}
 repos.
@@ -1061,8 +1061,8 @@ fullest extent possible.
 \subsection{Hierarchical identity}\label{hierarchical-identity}
 
 Groundwire ID's namespace has no outer limit: a nym can have as many
-words as you need. urbtc's namespace can accommodate \(2^{128}\)
-identities because each must correlate to an Urbit comet. urbtc
+words as you need. Urbtc's namespace can accommodate \(2^{128}\)
+identities because each must correlate to an Urbit comet. Urbtc
 identities must also correlate to Bitcoin sats, of which there will only
 ever be 2.1 quadrillion in existence, with far fewer in circulation. How
 could one Groundwire \textsc{pki} like urbtc scale to name all humans, devices,
