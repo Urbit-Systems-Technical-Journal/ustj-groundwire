@@ -218,14 +218,14 @@ mined it on their own machine or purchased it from a miner.
 Our initial English wordlist \S\ref{wordlist-construction} consists
 exclusively of iambs. For example, the pubkey\ldots{}
 
-\begin{lstlisting}[style=listingcode]
+\begin{lstlisting}[style=listingblock]
 00000000000ba839b38bcfd68037176c
 \end{lstlisting}
 
 \noindent
 would be encoded as\ldots{}
 
-\begin{lstlisting}[style=listingcode]
+\begin{lstlisting}[style=listingblock]
 .preserves.astounds.regrets.ensoul
 .repeats.about.receive.repulsed
 \end{lstlisting}
@@ -304,7 +304,7 @@ encourage the following layouts specifically:
 
 Twelve-word nym on three lines of four words:
 
-\begin{lstlisting}[style=listingcode]
+\begin{lstlisting}[style=listingblock]
 .eclipse.betray.escape.delight
 .mankind.alone.delay.ignite
 .implode.elect.enclose.alas
@@ -312,14 +312,14 @@ Twelve-word nym on three lines of four words:
 
 Ten-word nym on two lines of five words:
 
-\begin{lstlisting}[style=listingcode]
+\begin{lstlisting}[style=listingblock]
 .tattoo.giraffe.kazoo.champagne.balloon
 .auteurs.ablaze.admire.untamed.display
 \end{lstlisting}
 
 Nine-word nym on three lines of three words:
 
-\begin{lstlisting}[style=listingcode]
+\begin{lstlisting}[style=listingblock]
 .raccoon.beret.lagoon
 .typhoon.guitar.chateau
 .concur.exempt.vacate
@@ -327,7 +327,7 @@ Nine-word nym on three lines of three words:
 
 Eight-word nym on two lines of four words:
 
-\begin{lstlisting}[style=listingcode]
+\begin{lstlisting}[style=listingblock]
 .disgrace.expired.infest.reject
 .doubloon.retells.entice.retreat
 \end{lstlisting}
@@ -394,7 +394,7 @@ there wasn't an offchain anchor pointing to onchain data, then anyone
 could come in and attest to ownership of any comet and \texttt{\%ord-watcher}
 would naively believe them.''
 
-\begin{lstlisting}[style=listingcode]
+\begin{lstlisting}[style=listingblock]
 // pseudocode to produce a Groundwire ID tweak
 (concatenate [(length-encode 'urbtc')
                 [(length-encode 8)
@@ -406,7 +406,7 @@ Where \texttt{(concatenate\ ...)} concatenates an array of
 \texttt{{[}bitwidth\ bitstring{]}} pairs. This produces a
 bitstring which is hashed into the pubkey to couple it to the \textsc{pki} evidence.
 
-\begin{lstlisting}[style=listingcode]
+\begin{lstlisting}[style=listingblock]
 // pseudocode to apply the tweak to a pubkey
 (sha256 pubkey
   (concatenate [(length-encode 'urbtc')
@@ -501,7 +501,7 @@ node by attesting to a stable IP address onchain.
 
 An urbtc tweak looks like this:
 
-\begin{lstlisting}[style=listingcode]
+\begin{lstlisting}[style=listingblock]
 // pseudocode
 (concatenate [(length-encode 'urbtc')
                 [(length-encode 8)
@@ -509,7 +509,8 @@ An urbtc tweak looks like this:
                   (serialize spawn-sont))]])
 \end{lstlisting}
 
-Where the \texttt{spawn-sont} is a tuple of \texttt{\{txid\ vout\ offset\}}:
+\noindent
+where the \texttt{spawn-sont} is a tuple of \texttt{\{txid\ vout\ offset\}}:
 
 \begin{itemize}[noitemsep,topsep=2pt]
 
@@ -739,14 +740,14 @@ There are two forms of Wire \textsc{uri} (or ``wire''): signed, and unsigned.
 
 An unsigned wire is of the form:
 
-\begin{lstlisting}[style=listingcode]
+\begin{lstlisting}[style=listingblock]
 wire://id/tag/path
 \end{lstlisting}
 
 \noindent
 as in these examples:
 
-\begin{lstlisting}[style=listingcode]
+\begin{lstlisting}[style=listingblock]
 wire://aback.baboon.cabal.enough/https/groundwire.io
 wire://abyss.conceal.decrypt/geo/38.89278,-77.04583
 \end{lstlisting}
@@ -769,14 +770,14 @@ signed wire.
 
 Signed wires are of the form:
 
-\begin{lstlisting}[style=listingcode]
+\begin{lstlisting}[style=listingblock]
 wire://id/base64url
 \end{lstlisting}
 
 \noindent
 as in this example:
 
-\begin{lstlisting}[style=listingcode]
+\begin{lstlisting}[style=listingblock]
 wire://abate.banal.campaign.debate.elite/8BEBAC9odHRw
        cy9leGFtcGxlLmNvbRam2y5UYO8BaCbZDGFToaaToJugs8
        BX_uEOs3Hy7M95LhTn21s3_Mg-wH9WG-CsUxm2JGWjAbou
@@ -879,7 +880,7 @@ Some example use-cases for Wire \textsc{uri}s are as follows:
   their Groundwire node.
 \item
   \texttt{/ssh}: A \textsc{vps} host signs their host key fingerprint,
-  supplementing trust-on-first-use for users who want to \textsc{ssh} into that
+  supplementing trust-on-first-use for users who want to \texttt{ssh} into that
   server.
 \item
   \texttt{/geo}: A Groundwire ID signs coordinates of a geocache.
